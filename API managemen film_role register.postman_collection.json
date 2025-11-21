@@ -1,0 +1,318 @@
+{
+	"info": {
+		"_postman_id": "676e7b39-cf76-4c0c-906e-4d38c0114027",
+		"name": "API managemen film_role register",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48015809",
+		"_collection_link": "https://ridho-aiman006-7506579.postman.co/workspace/percobaan-API~6e1a5379-b3ef-40ba-98e6-ee7657ed7e9e/collection/48015809-676e7b39-cf76-4c0c-906e-4d38c0114027?action=share&source=collection_link&creator=48015809"
+	},
+	"item": [
+		{
+			"name": "register user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ridho\",\r\n    \"password\": \"ridho123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register admin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ridho aiman\",\r\n    \"password\": \"ridho aiman123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/register-admin",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"register-admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ridho\",\r\n    \"password\": \"ridho123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login admin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ridho aiman\",\r\n    \"password\": \"ridho aiman123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "data directors",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/directors",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"directors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tambah data directors",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InJpZGhvIiwicm9sZSI6InVzZXIifSwiaWF0IjoxNzYyNTAwNjEyLCJleHAiOjE3NjI1MDQyMTJ9.IGueaQ9d5YG5H4N4I_zJsMxHqlcKcFUDS-1WJ4G20sM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"siti muanah\",\r\n    \"birthyear\": 2022\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/directors",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"directors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit data directors (user)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InJpZGhvIiwicm9sZSI6InVzZXIifSwiaWF0IjoxNzYyNTAzOTYxLCJleHAiOjE3NjI1MDc1NjF9.q41urbCQwN1YixQd3TLT1O_OXJO_I5R2OxTSno1_WXQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"boboho\",\r\n    \"birthyear\": 2000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/directors/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"directors",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit data directors (admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJ1c2VybmFtZSI6InJpZGhvIGFpbWFuIiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTc2MjUwNDA0OSwiZXhwIjoxNzYyNTA3NjQ5fQ.0HMuUGqQT-wZiIcu1yrBgLNyO2aG8uwoehi7Ovb8Mb0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"diki andini\",\r\n    \"birthyear\": 2003\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/directors/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"directors",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hapus data directors (user)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InJpZGhvIiwicm9sZSI6InVzZXIifSwiaWF0IjoxNzYyNTAzOTYxLCJleHAiOjE3NjI1MDc1NjF9.q41urbCQwN1YixQd3TLT1O_OXJO_I5R2OxTSno1_WXQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/directors/3",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"directors",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hapus data directors (admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJ1c2VybmFtZSI6InJpZGhvIGFpbWFuIiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTc2MjUwNDA0OSwiZXhwIjoxNzYyNTA3NjQ5fQ.0HMuUGqQT-wZiIcu1yrBgLNyO2aG8uwoehi7Ovb8Mb0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/directors/4",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"directors",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
