@@ -4,8 +4,7 @@ const cors = require('cors');
 const db = require('./db.js'); // Menggunakan modul pg baru
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { authenticateToken, authorizeRole } =
-require('./middleware/auth.js');
+const { authenticateToken, authorizeRole } = require('./middleware/auth.js');
 
 const app = express();
 const PORT = process.env.PORT || 3300;
@@ -23,16 +22,15 @@ app.get('/status', (req, res) => {
 // === AUTH ROUTES (Refactored for pg) ===
 app.post('/auth/register', async (req, res, next) => {
     const { username, password } = req.body;
-    
+
     if (!username || !password || password.length < 6) {
-        return res.status(400).json({ error: 'Username dan password(min 6 char) harus diisi' });
+        return res.status(400).json({ error: 'username dan password(min 6 char) harus diisi' });
     }
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const sql = 'INSERT INTO users (username, password, role) VALUES ($1, $2, $3) RETURNING id, username';
-        const result = await db.query(sql, [username.toLowerCase(),
-        hashedPassword, 'user']);
+        const result = await db.query(sql, [username.toLowerCase(), hashedPassword, 'user']);
         res.status(201).json(result.rows[0]);
     } catch (err) {
         if (err.code === '23505') { // Kode error unik PostgreSQL
