@@ -169,15 +169,15 @@ app.delete('/movies/:id', [authenticateToken, authorizeRole('admin')], async (re
 });
 
 app.post('/directors', authenticateToken, async (req, res, next) => {
-    const { name, birthyear } = req.body;
+    const { name, birthYear } = req.body;
 
-    if (!name || !birthyear) {
+    if (!name || !birthYear) {
         return res.status(400).json({ error: 'name dan birthyear wajib diisi' });
     }
-    const sql = 'INSERT INTO directors (name, birthyear)VALUES ($1, $2) RETURNING *';
+    const sql = 'INSERT INTO directors (name, "birthYear")VALUES ($1, $2) RETURNING *';
     
     try {
-        const result = await db.query(sql, [name, birthyear]);
+        const result = await db.query(sql, [name, birthYear]);
         res.status(201).json(result.rows[0]);
     } catch (err) {
         next(err);
