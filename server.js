@@ -168,6 +168,18 @@ app.delete('/movies/:id', [authenticateToken, authorizeRole('admin')], async (re
     }
 });
 
+// === DIRECTORS ROUTES (Refactored for pg) ===
+app.get('/directors', async (req, res, next) => {
+    const sql = 'SELECT * FROM directors';
+
+    try {
+        const result = await db.query(sql);
+        res.json(result.rows);
+    } catch (err) {
+        next(err);
+    }
+});
+
 app.post('/directors', authenticateToken, async (req, res, next) => {
     const { name, birthYear } = req.body;
 
