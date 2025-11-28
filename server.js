@@ -127,12 +127,12 @@ app.post('/movies', authenticateToken, async (req, res, next) => {
     const { title, director_id, year } = req.body;
 
     if (!title || !director_id || !year) {
-        return res.status(400).json({ error: 'title, director_id, ear wajib diisi' });
+        return res.status(400).json({ error: 'title, director_id, year wajib diisi' });
     }
     const sql = 'INSERT INTO movies (title, director_id, year)VALUES ($1, $2, $3) RETURNING *';
     
     try {
-        const result = await db.query(sql, [title, director_id, ear]);
+        const result = await db.query(sql, [title, director_id, year]);
         res.status(201).json(result.rows[0]);
     } catch (err) {
         next(err);
