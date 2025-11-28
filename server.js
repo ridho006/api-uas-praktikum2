@@ -168,6 +168,22 @@ app.delete('/movies/:id', [authenticateToken, authorizeRole('admin')], async (re
     }
 });
 
+app.post('/directors', authenticateToken, async (req, res, next) => {
+    const { name, birthyear } = req.body;
+
+    if (!name || !birthyear) {
+        return res.status(400).json({ error: 'name dan birthyear wajib diisi' });
+    }
+    const sql = 'INSERT INTO directors (name, birthyear)VALUES ($1, $2) RETURNING *';
+    
+    try {
+        const result = await db.query(sql, [name, birthyear]);
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        next(err);
+    }
+});
+
 // === FALLBACK & ERROR HANDLING ===
 app.use((req, res) => {
     res.status(404).json({ error: 'Rute tidak ditemukan' });
