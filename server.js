@@ -181,7 +181,7 @@ app.get('/directors', async (req, res, next) => {
 });
 
 app.get('/directors/:id', async (req, res, next) => {
-    const sql = 'SELECT * FROM directors WHERE id = $1';
+    const sql = 'SELECT * FROM directors WHERE d.id = $1';
 
     try {
         const result = await db.query(sql, [req.params.id]);
