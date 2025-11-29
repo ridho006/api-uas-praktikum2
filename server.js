@@ -181,7 +181,7 @@ app.get('/directors', async (req, res, next) => {
 });
 
 app.get('/directors/:id', async (req, res, next) => {
-    const sql = 'SELECT * FROM directors d WHERE d.id = $1';
+    const sql = 'SELECT * FROM directors WHERE id = $1';
 
     try {
         const result = await db.query(sql, [req.params.id]);
@@ -220,6 +220,20 @@ app.put('/directors/:id', [authenticateToken, authorizeRole('admin')], async (re
             return res.status(404).json({ error: 'Director tidak ditemukan' });
         }
         res.json(result.rows[0]);
+    } catch (err) {
+        next(err);
+    }
+});
+
+app.delete('/directors/:id', [authenticateToken, authorizeRole('admin')], async (req, res, next) => {
+    const sql = 'DELETE FROM directors WHERE id = $1 RETURNING *';
+    
+    try {
+        const result = await db.query(sql, [req.params.id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Directors tidak ditemukan' });
+        }
+        res.status(204).send();
     } catch (err) {
         next(err);
     }
