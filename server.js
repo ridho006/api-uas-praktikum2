@@ -180,6 +180,20 @@ app.get('/directors', async (req, res, next) => {
     }
 });
 
+app.get('/directors/:id', async (req, res, next) => {
+    const sql = 'SELECT * FROM directors WHERE id = ?';
+
+    try {
+        const result = await db.query(sql, [req.params.id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Directors tidak ditemukan' });
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        next(err);
+    }
+});
+
 app.post('/directors', authenticateToken, async (req, res, next) => {
     const { name, birthYear } = req.body;
 
