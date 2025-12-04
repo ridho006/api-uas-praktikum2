@@ -1,30 +1,42 @@
-const express = require('express');
-const db = require('../db.js');
+const express = require("express");
 const router = express.Router();
+const pool = require("../db");
 
-router.get('/', async (req, res, next) => {
-    try {
-        const result = await db.query("SELECT * FROM vendor_b ORDER BY id ASC");
-        res.json(result.rows);
-    } catch (err) {
-        next(err);
-    }
+// GET
+router.get("/", async (req, res) => {
+  const result = await pool.query("SELECT * FROM vendor_b");
+  res.json(result.rows);
 });
 
-router.post('/', async (req, res, next) => {
-    const { sku, product_name, price, is_available } = req.body;
-    try {
-        const sql = `
-            INSERT INTO vendor_b (sku, product_name, price, is_available)
-            VALUES ($1, $2, $3, $4) RETURNING *
-        `;
-        const result = await db.query(sql, [sku, product_name, price, is_available]);
-        res.status(201).json(result.rows[0]);
-    } catch (err) {
-        next(err);
-    }
+// POST
+router.post("/", async (req, res) => {
+  const { sku, productName, price, isAvailable } = req.body;
+
+  await pool.query(
+    "INSERT INTO vendor_b (sku, product_name, price, is_available) VALUES ($1, $2, $3, $4)",
+    [sku, productName, price, isAvailable]
+  );
+
+  res.json({ message: "Data Vendor B ditambahkan" });
 });
 
+// PUT
+router.put("/:sku", async (req, res) => {
+  const { sku } = req.params;
+  const { productName, price, isAvailable } = req.body;
 
+  await pool.query(
+    "UPDATE vendor_b SET product_name=$1, price=$2, is_available=$3 WHERE sku=$4",
+    [productName, price, isAvailable, sku]
+  );
+
+  res.json({ message: "Data Vendor B diperbarui" });
+});
+
+// DELETE
+router.delete("/:sku", async (req, res) => {
+  await pool.query("DELETE FROM vendor_b WHERE sku=$1", [req.params.sku]);
+  res.json({ message: "Data Vendor B dihapus" });
+});
 
 module.exports = router;
