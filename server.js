@@ -27,7 +27,7 @@ app.use("/vendor3", vendorC);
 
 // === ROUTES ===
 app.get('/status', (req, res) => {
-    res.json({ ok: true, service: 'film-api' });
+    res.json({ ok: true, service: 'film-api menyala bolooo' });
 });
 
 // === AUTH ROUTES (Refactored for pg) ===
