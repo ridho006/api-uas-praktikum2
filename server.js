@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT = process.env.PORT || 3300;
+// const PORT = process.env.PORT || 3300;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // === MIDDLEWARE ===
@@ -157,6 +157,8 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Terjadi kesalahan pada server' });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log('Server aktif di http://localhost:${PORT}');
-});
+// app.listen(PORT, '0.0.0.0', () => {
+//     console.log('Server aktif di http://localhost:${PORT}');
+// });
+
+module.exports = app;
