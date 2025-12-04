@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET – lihat semua data
 router.get("/", async (req, res) => {
-  const result = await pool.query("SELECT * FROM vendor_a");
+  const result = await db.query("SELECT * FROM vendor_a");
   res.json(result.rows);
 });
 
