@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const { authenticateToken, authorizeRole } = require('../middleware/auth');
+
 
 router.get('/', async (req, res, next) => {
     try {
@@ -21,7 +23,7 @@ router.get('/:kd_produk', async (req, res, next) => {
     }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', authenticateToken, async (req, res, next) => {
     const { kd_produk, nm_brg, hrg, ket_stok } = req.body;
     try {
         const sql = `
@@ -35,7 +37,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.put('/:kd_produk', async (req, res, next) => {
+router.put('/:kd_produk',[authenticateToken, authorizeRole('admin')], async (req, res, next) => {
     const {kd_produk} = req.params;
     const {nm_brg, hrg, ket_stok } = req.body;
 
@@ -52,7 +54,7 @@ router.put('/:kd_produk', async (req, res, next) => {
     }
 });
 
-router.delete('/:kd_produk', async (req, res, next) => {
+router.delete('/:kd_produk',[authenticateToken, authorizeRole('admin')], async (req, res, next) => {
     try {
         const result = await db.query("DELETE FROM vendor_a WHERE kd_produk=$1 RETURNING *", [req.params.kd_produk]);
         if (result.rowCount === 0) return res.status(404).json({ error: "Data tidak ditemukan" });

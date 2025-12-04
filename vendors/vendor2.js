@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const { authenticateToken, authorizeRole } = require('../middleware/auth');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -21,7 +22,7 @@ router.get('/:sku', async (req, res, next) => {
     }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', authenticateToken, async (req, res, next) => {
     const { sku, productName, price, isAvailable } = req.body;
     try {
         const sql = `
@@ -35,7 +36,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.put('/:sku', async (req, res, next) => {
+router.put('/:sku', [authenticateToken, authorizeRole('admin')], async (req, res, next) => {
     const {sku} = req.params;
     const { productName, price, isAvailable } = req.body;
 
@@ -52,7 +53,7 @@ router.put('/:sku', async (req, res, next) => {
     }
 });
 
-router.delete('/:sku', async (req, res, next) => {
+router.delete('/:sku', [authenticateToken, authorizeRole('admin')], async (req, res, next) => {
     try {
         const result = await db.query("DELETE FROM vendor_b WHERE sku=$1 RETURNING *", [req.params.sku]);
         if (result.rowCount === 0) return res.status(404).json({ error: "Data tidak ditemukan" });
