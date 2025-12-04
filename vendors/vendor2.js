@@ -1,42 +1,65 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db");
+const db = require("../db");
 
-// GET
-router.get("/", async (req, res) => {
-  const result = await pool.query("SELECT * FROM vendor_b");
-  res.json(result.rows);
+router.get('/', async (req, res, next) => {
+    try {
+        const result = await db.query("SELECT * FROM vendor_b");
+        res.json(result.rows);
+    } catch (err) {
+        next(err);
+    }
 });
 
-// POST
-router.post("/", async (req, res) => {
-  const { sku, productName, price, isAvailable } = req.body;
-
-  await pool.query(
-    "INSERT INTO vendor_b (sku, product_name, price, is_available) VALUES ($1, $2, $3, $4)",
-    [sku, productName, price, isAvailable]
-  );
-
-  res.json({ message: "Data Vendor B ditambahkan" });
+router.get('/:sku', async (req, res, next) => {
+    try {
+        const result = await db.query("SELECT * FROM vendor_b WHERE sku = $1", [req.params.sku]);
+        if (result.rows.length === 0) return res.status(404).json({ error: "Data tidak ditemukan" });
+        res.json(result.rows[0]);
+    } catch (err) {
+        next(err);
+    }
 });
 
-// PUT
-router.put("/:sku", async (req, res) => {
-  const { sku } = req.params;
-  const { productName, price, isAvailable } = req.body;
-
-  await pool.query(
-    "UPDATE vendor_b SET product_name=$1, price=$2, is_available=$3 WHERE sku=$4",
-    [productName, price, isAvailable, sku]
-  );
-
-  res.json({ message: "Data Vendor B diperbarui" });
+router.post('/', async (req, res, next) => {
+    const { sku, productName, price, isAvailable } = req.body;
+    try {
+        const sql = `
+            INSERT INTO vendor_b (sku, productName, price, isAvailable)
+            VALUES ($1, $2, $3, $4) RETURNING *
+        `;
+        const result = await db.query(sql, [sku, productName, price, isAvailable]);
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        next(err);
+    }
 });
 
-// DELETE
-router.delete("/:sku", async (req, res) => {
-  await pool.query("DELETE FROM vendor_b WHERE sku=$1", [req.params.sku]);
-  res.json({ message: "Data Vendor B dihapus" });
+router.put('/:sku', async (req, res, next) => {
+    const {sku} = req.params;
+    const { productName, price, isAvailable } = req.body;
+
+    try {
+        const sql = `
+            UPDATE vendor_b SET productName=$1, price=$2, isAvailable=$3
+            WHERE sku=$4 RETURNING *
+        `;
+        const result = await db.query(sql, [productName, price, isAvailable, sku]);
+        if (result.rowCount === 0) return res.status(404).json({ error: "Data tidak ditemukan" });
+        res.json(result.rows[0]);
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.delete('/:sku', async (req, res, next) => {
+    try {
+        const result = await db.query("DELETE FROM vendor_b WHERE sku=$1 RETURNING *", [req.params.sku]);
+        if (result.rowCount === 0) return res.status(404).json({ error: "Data tidak ditemukan" });
+        res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;
