@@ -95,6 +95,58 @@ app.post('/auth/login', async (req, res, next) => {
     }
 });
 
+// integrator mahasiswa 4
+app.get("/products", async (req, res) => {
+  try {
+    // Ambil data dari PostgreSQL
+    const vendorA = (await db.query("SELECT * FROM vendor_a")).rows;
+    const vendorB = (await db.query("SELECT * FROM vendor_b")).rows;
+    const vendorC = (await db.query("SELECT * FROM vendor_c")).rows;
+
+    // mapping dan normalisasi vendor A
+    const normalizedA = vendorA.map(item => ({
+      id: item.kd_produk,
+      name: item.nm_brg,
+      price: Math.round(parseInt(item.hrg) * 0.9), // diskon 10%
+      stock: item.ket_stok,
+      vendor: "Vendor A - Warung Klontong"
+    }));
+
+    // mapping dan normalisasi vendor B
+    const normalizedB = vendorB.map(item => ({
+      id: item.sku,
+      name: item.product_name,
+      price: item.price,
+      stock: item.is_available ? "Tersedia" : "Kosong",
+      vendor: "Vendor B - Distro Fashion"
+    }));
+
+    // mapping dan normalisasi vendor C
+    const normalizedC = vendorC.map(item => ({
+      id: item.id,
+      name:
+        item.category === "Food"
+          ? item.name + " (Recommended)"
+          : item.name,
+      price: item.base_price + item.tax, // final price
+      stock: item.stock > 0 ? `${item.stock} item` : "Kosong",
+      vendor: "Vendor C - Resto & Kuliner"
+    }));
+
+    // Gabungkan semua vendor
+    const finalData = [...normalizedA, ...normalizedB, ...normalizedC];
+
+    res.json({
+      message: "Integrasi Sukses",
+      total: finalData.length,
+      data: finalData
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Terjadi kesalahan pada integrator" });
+  }
+});
+
 // === FALLBACK & ERROR HANDLING ===
 app.use((req, res) => {
     res.status(404).json({ error: 'Rute tidak ditemukan' });
